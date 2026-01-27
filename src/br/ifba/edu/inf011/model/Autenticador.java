@@ -1,13 +1,18 @@
 package br.ifba.edu.inf011.model;
 
-import java.time.LocalDate;
-
 import br.ifba.edu.inf011.model.documentos.Documento;
-import br.ifba.edu.inf011.model.documentos.Privacidade;
+import br.ifba.edu.inf011.strategy.AutenticadorStrategy;
+import br.ifba.edu.inf011.strategy.PadraoAutenticadorStrategy;
 
 public class Autenticador {
+	private AutenticadorStrategy strategy;
+
+	public Autenticador() {
+		this.strategy = new PadraoAutenticadorStrategy();
+	}
 	
 	public void autenticar(Integer tipo, Documento documento) {
+		/*
 		String numero;
 		if(tipo == 0)
 			numero = "CRI-" + LocalDate.now().getYear() + "-" + documento.hashCode();
@@ -21,7 +26,8 @@ public class Autenticador {
             }
         }else
 			numero = "DOC-" + System.currentTimeMillis(); 
-		documento.setNumero(numero);
+		*/
+		documento.setNumero(this.strategy.generateNumber(documento));
 	}
 
 }
