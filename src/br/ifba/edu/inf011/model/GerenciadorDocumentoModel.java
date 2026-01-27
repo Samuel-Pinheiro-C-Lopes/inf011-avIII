@@ -8,6 +8,7 @@ import br.ifba.edu.inf011.model.documentos.Documento;
 import br.ifba.edu.inf011.model.documentos.Privacidade;
 import br.ifba.edu.inf011.model.operador.Operador;
 
+// PARTICIPANT: Receiver (command)
 public class GerenciadorDocumentoModel {
 
 	private List<Documento> repositorio;

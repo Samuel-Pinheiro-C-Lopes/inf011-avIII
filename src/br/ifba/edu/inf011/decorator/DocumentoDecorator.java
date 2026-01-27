@@ -6,7 +6,7 @@ import br.ifba.edu.inf011.model.documentos.Privacidade;
 import br.ifba.edu.inf011.model.operador.Operador;
 import br.ifba.edu.inf011.prototype.Prototipavel;
 
-public class DocumentoDecorator implements Documento{
+public class DocumentoDecorator implements Documento {
 	
 	private Documento wrappeeDocumento;
 	
