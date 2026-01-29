@@ -1,37 +1,36 @@
 package br.ifba.edu.inf011.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import br.ifba.edu.inf011.af.DocumentOperatorFactory;
-import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
 import br.ifba.edu.inf011.model.documentos.Documento;
+import br.ifba.edu.inf011.strategy.AutenticadorStrategy;
+import br.ifba.edu.inf011.strategy.DiaProprietarioHashAutenticadorStrategy;
+import br.ifba.edu.inf011.strategy.HashYearAutenticadorStrategy;
+import br.ifba.edu.inf011.strategy.PadraoAutenticadorStrategy;
+import br.ifba.edu.inf011.strategy.PrivacidadeHashAutenticadorStrategy;
 
 public abstract class AbstractGerenciadorDocumentosUI extends JFrame implements ListSelectionListener{
     
 	protected GerenciadorDocumentoModel controller;
-	protected JPanelBarraSuperior<String> barraSuperior;
+	protected JPanelBarraSuperior<AutenticadorStrategy> barraSuperior;
 	protected JPanelAreaEdicao areaEdicao;
 	protected JPanelListaDocumentos<String> barraDocs;
 	
-	protected String[] tipos = {"Criminal", "Pessoal", "Exportação", "Confidencial"};
-	
+	//protected String[] tipos = {"Criminal", "Pessoal", "Exportação", "Confidencial"};
+	protected AutenticadorStrategy[] tipos = {
+			new DiaProprietarioHashAutenticadorStrategy(),
+			new HashYearAutenticadorStrategy(),
+			new PadraoAutenticadorStrategy(),
+			new PrivacidadeHashAutenticadorStrategy()
+	};
     protected Documento atual;
     protected DefaultListModel<String> listDocs;
     
@@ -39,7 +38,7 @@ public abstract class AbstractGerenciadorDocumentosUI extends JFrame implements 
     public AbstractGerenciadorDocumentosUI(DocumentOperatorFactory factory) {
         this.controller = new GerenciadorDocumentoModel(factory);
     	this.listDocs = new DefaultListModel<String>();
-    	this.barraSuperior = new JPanelBarraSuperior<String>(tipos);
+    	this.barraSuperior = new JPanelBarraSuperior<AutenticadorStrategy>(tipos);
     	this.areaEdicao = new JPanelAreaEdicao();
     	this.barraDocs = new JPanelListaDocumentos<String>(this.listDocs, this);
     	this.montarAparencia();

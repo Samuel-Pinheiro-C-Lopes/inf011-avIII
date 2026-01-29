@@ -6,16 +6,17 @@ import br.ifba.edu.inf011.model.documentos.Documento;
 
 // PARTICIPANTE: ConcreteCommand
 public class TornarUrgenteDocumentoCommand extends IndirecaoBaseDocumentoCommand {
-	
-	protected TornarUrgenteDocumentoCommand(GerenciadorDocumentoModel gestorDocumento) {
+	private final Documento documento;
+	public TornarUrgenteDocumentoCommand(GerenciadorDocumentoModel gestorDocumento, Documento documento) {
 		super(gestorDocumento);
+		this.documento = documento;
 	}
 
 	@Override
-	public void execute(Documento documento) {
+	public void execute() {
 		try {
-			this.documentoAnterior = documento;
-			this.gestorDocumento.tornarUrgente(documento);
+			this.documentoAnterior = this.documento;
+			this.gestorDocumento.tornarUrgente(this.documento);
 		} catch (FWDocumentException e) {
 			e.printStackTrace();
 		}

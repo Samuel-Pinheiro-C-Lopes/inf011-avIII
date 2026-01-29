@@ -11,4 +11,11 @@ public class DiaProprietarioHashAutenticadorStrategy implements AutenticadorStra
 	public String generateNumber(Documento documento) {
 		return "PES-" + LocalDate.now().getDayOfYear() + "-" + documento.getProprietario().hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "Pessoal";
+	}
+	
+	
 }

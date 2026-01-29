@@ -8,19 +8,22 @@ public class SalvarDocumentoCommand extends BaseDocumentoCommand {
 	private final String conteudo;
 	private String conteudoAntigo;
 	private Documento documentoAlterado;
+	private final Documento documento;
 	
-	protected SalvarDocumentoCommand(
+	public SalvarDocumentoCommand(
 			GerenciadorDocumentoModel gestorDocumento,
-			String conteudo
+			String conteudo,
+			Documento documento
 	) {
 		super(gestorDocumento);
 		this.conteudo = conteudo;
+		this.documento = documento;
 	}
 
 	@Override
-	public void execute(Documento documento) {
+	public void execute() {
 		try {
-			this.conteudoAntigo = documento.getConteudo();
+			this.conteudoAntigo = this.documento.getConteudo();
 			this.gestorDocumento.salvarDocumento(documento, this.conteudo);
 			this.documentoAlterado = documento;
 		} catch (Exception e) {

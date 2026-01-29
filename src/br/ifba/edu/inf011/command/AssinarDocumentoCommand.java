@@ -6,15 +6,17 @@ import br.ifba.edu.inf011.model.documentos.Documento;
 
 // PARTICIPANTE: ConcreteCommand
 public class AssinarDocumentoCommand extends IndirecaoBaseDocumentoCommand {
+	private final Documento documento;
 	
-	public AssinarDocumentoCommand(final GerenciadorDocumentoModel gestorDocumento) {
+	public AssinarDocumentoCommand(final GerenciadorDocumentoModel gestorDocumento, final Documento documento) {
 		super(gestorDocumento);
+		this.documento = documento;
 	}
 	
 	@Override
-	public void execute(final Documento documento) {
+	public void execute() {
 		try {
-			this.documentoAnterior = documento;
+			this.documentoAnterior = this.documento;
 			this.gestorDocumento.assinarDocumento(documento);
 		} catch (FWDocumentException e) {
 			e.printStackTrace();

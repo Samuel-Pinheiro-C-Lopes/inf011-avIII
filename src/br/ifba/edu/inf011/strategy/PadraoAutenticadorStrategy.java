@@ -9,4 +9,9 @@ public class PadraoAutenticadorStrategy implements AutenticadorStrategy {
 	public String generateNumber(Documento documento) {
 		return "DOC-" + System.currentTimeMillis();
 	}
+
+	@Override
+	public String toString() {
+		return "Confidencial";
+	}
 }

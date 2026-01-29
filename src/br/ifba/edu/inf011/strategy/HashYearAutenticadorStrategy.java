@@ -11,4 +11,9 @@ public class HashYearAutenticadorStrategy implements AutenticadorStrategy {
 	public String generateNumber(Documento documento) {
 		return "CRI-" + LocalDate.now().getYear() + "-" + documento.hashCode();
 	}
+	
+	@Override
+	public String toString() {
+		return "Criminal";
+	}
 }

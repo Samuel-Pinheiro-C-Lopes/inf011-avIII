@@ -13,4 +13,9 @@ public class PrivacidadeHashAutenticadorStrategy implements AutenticadorStrategy
         
         return "PUB-" + documento.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "Exportação";
+	}
 }
