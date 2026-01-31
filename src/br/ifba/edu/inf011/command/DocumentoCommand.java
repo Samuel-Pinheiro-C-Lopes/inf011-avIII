@@ -10,6 +10,7 @@ public interface DocumentoCommand /*extends Component */{
 	void revert();
 	DocumentoCommand getChild();
 	DocumentoCommand getParent();
+	String getLog(Boolean isExecute);
 	void setParent(DocumentoCommand parent);
 	DocumentoCommand addChild(DocumentoCommand child);
 }

@@ -6,15 +6,16 @@ import br.ifba.edu.inf011.af.DocumentOperatorFactory;
 import br.ifba.edu.inf011.command.AssinarDocumentoCommand;
 import br.ifba.edu.inf011.command.CriarDocumentoCommand;
 import br.ifba.edu.inf011.command.DocumentoCommand;
+import br.ifba.edu.inf011.command.DocumentoCommandManager;
 import br.ifba.edu.inf011.command.ProtegerDocumentoCommand;
 import br.ifba.edu.inf011.command.SalvarDocumentoCommand;
 import br.ifba.edu.inf011.command.TornarUrgenteDocumentoCommand;
-import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.documentos.Privacidade;
 import br.ifba.edu.inf011.strategy.AutenticadorStrategy;
 
 public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
 	private DocumentoCommand documentCommand;
+	private DocumentoCommandManager commandManager = new DocumentoCommandManager();
 	
 	 public MyGerenciadorDocumentoUI(DocumentOperatorFactory factory) {
 		super(factory);
@@ -130,13 +131,9 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
 	private void criarDocumento(Privacidade privacidade) {
 		try {
 			AutenticadorStrategy strategy = this.barraSuperior.getSelected();
+			
 			CriarDocumentoCommand cmd = new CriarDocumentoCommand(this.atual, controller, strategy, privacidade);
-			if (this.documentCommand == null) {
-				this.documentCommand = cmd;
-			} else {
-				this.documentCommand = this.documentCommand.addChild(cmd);
-			}
-			cmd.execute();
+			commandManager .executeCommand(cmd);
 			if (!controller.getRepositorio().isEmpty()) {
 				this.atual = controller.getRepositorio().get(controller.getRepositorio().size() - 1);
 				this.barraDocs.addDoc("[" + atual.getNumero() + "]");
@@ -155,12 +152,13 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
       //  }
     }
 	
+	
+	private void mostrarLogs() {
+		
+	}
+	
 	private void desfazer() {
-		if (this.documentCommand != null) {
-			this.documentCommand.revert();
-			this.documentCommand = this.documentCommand.getParent();
-			this.refreshUI();
-		}
+
 	}
 	
 	private void refazer() {

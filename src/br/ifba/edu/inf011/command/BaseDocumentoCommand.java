@@ -17,6 +17,15 @@ public abstract class BaseDocumentoCommand implements DocumentoCommand {
 	}
 	
 	@Override
+	public String getLog(Boolean isExecute) {
+		String commandName = this.toString();
+		if(!isExecute) {
+			return "Revertendo " + commandName;
+		}
+		return "Executando " + commandName;
+	}
+	
+	@Override
 	public DocumentoCommand addChild(DocumentoCommand command) {
 		this.child = command;
 		this.child.setParent(this);
