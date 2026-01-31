@@ -1,7 +1,7 @@
 package br.ifba.edu.inf011.ui;
 
-import br.ifba.edu.inf011.command.CriarDocumentoCommand;
-import br.ifba.edu.inf011.command.DocumentoCommand;
+import br.ifba.edu.inf011.command.implementations.CriarDocumentoCommand;
+import br.ifba.edu.inf011.command.interfaces.DocumentoCommand;
 
 public class CommandHandler {
 	/*

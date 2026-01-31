@@ -1,5 +1,6 @@
-package br.ifba.edu.inf011.command;
+package br.ifba.edu.inf011.command.implementations;
 
+import br.ifba.edu.inf011.command.abstractions.IndirecaoBaseDocumentoCommand;
 import br.ifba.edu.inf011.model.FWDocumentException;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
 import br.ifba.edu.inf011.model.documentos.Documento;
@@ -14,13 +15,15 @@ public class ProtegerDocumentoCommand extends IndirecaoBaseDocumentoCommand {
 	}
 
 	@Override
-	public void execute() {
-		try {
+	public void executeHook() throws FWDocumentException {
 			this.documentoAnterior = this.documento;
 			this.gestorDocumento.protegerDocumento(this.documento);
-		} catch (FWDocumentException e) {
-			e.printStackTrace();
-		}
+	}
+
+	@Override
+	protected String getLogHook(Boolean isExecute) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

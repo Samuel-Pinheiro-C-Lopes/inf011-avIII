@@ -1,5 +1,6 @@
-package br.ifba.edu.inf011.command;
+package br.ifba.edu.inf011.command.implementations;
 
+import br.ifba.edu.inf011.command.abstractions.BaseDocumentoCommand;
 import br.ifba.edu.inf011.model.GerenciadorDocumentoModel;
 import br.ifba.edu.inf011.model.documentos.Documento;
 
@@ -21,26 +22,24 @@ public class SalvarDocumentoCommand extends BaseDocumentoCommand {
 	}
 
 	@Override
-	public void execute() {
-		try {
+	public void executeHook() throws Exception {
 			this.conteudoAntigo = this.documento.getConteudo();
 			this.gestorDocumento.salvarDocumento(documento, this.conteudo);
 			this.documentoAlterado = documento;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 	}
 
 	@Override
-	public void revert() {
+	public void revertHook() throws Exception {
 		if (this.documentoAlterado == null) return;
 		
-		try {
-			this.gestorDocumento.salvarDocumento(documentoAlterado, this.conteudoAntigo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.gestorDocumento.salvarDocumento(documentoAlterado, this.conteudoAntigo);
+
+	}
+
+	@Override
+	protected String getLogHook(Boolean isExecute) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

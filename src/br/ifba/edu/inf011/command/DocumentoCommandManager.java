@@ -1,35 +1,33 @@
 package br.ifba.edu.inf011.command;
 
-import java.util.ArrayList;
-import java.util.List;
+import br.ifba.edu.inf011.command.interfaces.DocumentoCommand;
 
 public class DocumentoCommandManager {
-	private DocumentoCommand documentCommand = null;
-	private final List<String> logCommands = new ArrayList<String>();
+	private DocumentoCommand currentCommand = null;
 	
-	public void executeCommand(DocumentoCommand cmd) {
-		if (this.documentCommand == null) {
-			this.documentCommand = cmd;
+	public void execute(DocumentoCommand cmd) throws Exception {
+		if (this.currentCommand == null) {
+			this.currentCommand = cmd;
 		} else {
-			this.documentCommand = this.documentCommand.addChild(cmd);
+			this.currentCommand = this.currentCommand.addChild(cmd);
 		}
-		logCommands.add(cmd.getLog(Boolean.TRUE));
+
 		cmd.execute();
 	}
 	
-	public void revertCommand() {
-		if (this.documentCommand != null) {
-			logCommands.add(documentCommand.getLog(Boolean.FALSE));
-			this.documentCommand.revert();
-			this.documentCommand = this.documentCommand.getParent();
-		}
+	public void undo() throws Exception {
+		if (this.currentCommand == null) 
+			return;
+		
+		this.currentCommand.undo();
+		this.currentCommand = this.currentCommand.getParent();
 	}
 	
-	public String getLogs() {
-		String logFull = "";
-		for(String log : this.logCommands) {
-			logFull += log + "\n";
-		}
-		return logFull;
+	public void revert() throws Exception {
+		if (this.currentCommand.getChild() == null)
+			return;
+		
+		this.currentCommand = this.currentCommand.getChild();
+		this.currentCommand.execute();
 	}
 }
