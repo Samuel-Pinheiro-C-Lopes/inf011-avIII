@@ -14,7 +14,14 @@ public abstract class IndirecaoBaseDocumentoCommand extends BaseDocumentoCommand
 	public void revert() {
 		if (this.documentoAnterior == null) return;
 		
-		this.gestorDocumento.atualizarRepositorio(documentoAnterior, documentoAnterior);
+		for (Documento docAtual : this.gestorDocumento.getRepositorio()) {
+			if (docAtual != null && docAtual.getNumero() != null && 
+			    this.documentoAnterior.getNumero() != null &&
+			    docAtual.getNumero().equals(this.documentoAnterior.getNumero())) {
+				this.gestorDocumento.atualizarRepositorio(docAtual, this.documentoAnterior);
+				break;
+			}
+		}
 		
 		/*
 		 * opsie, não vi que gestor documento já tinha um método para update

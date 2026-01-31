@@ -45,7 +45,18 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
 	
 	protected void salvarConteudo() {
         try {
-        	this.documentCommand = this.documentCommand.addChild(new SalvarDocumentoCommand(controller, this.areaEdicao.getConteudo(), this.atual));
+        	if (this.atual == null) {
+        		JOptionPane.showMessageDialog(this, "Nenhum documento selecionado!");
+        		return;
+        	}
+        	SalvarDocumentoCommand cmd = new SalvarDocumentoCommand(controller, this.areaEdicao.getConteudo(), this.atual);
+        	if (this.documentCommand == null) {
+        		this.documentCommand = cmd;
+        	} else {
+        		this.documentCommand = this.documentCommand.addChild(cmd);
+        	}
+        	cmd.execute();
+			JOptionPane.showMessageDialog(this, "Documento salvo com sucesso!");
             //this.controller.salvarDocumento(this.atual, this.areaEdicao.getConteudo());
         } catch (Exception e) {
         	JOptionPane.showMessageDialog(this, "Erro ao Salvar: " + e.getMessage());
@@ -53,41 +64,87 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
     }	
 	
 	protected void protegerDocumento() {
-		//try {
-		this.documentCommand = this.documentCommand.addChild(new ProtegerDocumentoCommand(controller, this.atual));
-			//this.controller.protegerDocumento(this.atual);
-		this.refreshUI();
-		//} catch (FWDocumentException e) {
-		//	JOptionPane.showMessageDialog(this, "Erro ao proteger: " + e.getMessage());
-		//}
+		try {
+			if (this.atual == null) {
+				JOptionPane.showMessageDialog(this, "Nenhum documento selecionado!");
+				return;
+			}
+			ProtegerDocumentoCommand cmd = new ProtegerDocumentoCommand(controller, this.atual);
+			if (this.documentCommand == null) {
+				this.documentCommand = cmd;
+			} else {
+				this.documentCommand = this.documentCommand.addChild(cmd);
+			}
+			cmd.execute();
+			// Atualiza o documento atual para o novo documento protegido
+			this.atual = controller.getDocumentoAtual();
+			this.refreshUI();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erro ao proteger: " + e.getMessage());
+		}
 	}
 
 	protected void assinarDocumento() {
-		//try {
-			// this.controller.assinarDocumento(this.atual);
-			this.documentCommand = this.documentCommand.addChild(new AssinarDocumentoCommand(controller, this.atual));
+		try {
+			if (this.atual == null) {
+				JOptionPane.showMessageDialog(this, "Nenhum documento selecionado!");
+				return;
+			}
+			AssinarDocumentoCommand cmd = new AssinarDocumentoCommand(controller, this.atual);
+			if (this.documentCommand == null) {
+				this.documentCommand = cmd;
+			} else {
+				this.documentCommand = this.documentCommand.addChild(cmd);
+			}
+			cmd.execute();
+			// Atualiza o documento atual para o novo documento assinado
+			this.atual = controller.getDocumentoAtual();
 			this.refreshUI();
-		//} catch (FWDocumentException e) {
-		//	JOptionPane.showMessageDialog(this, "Erro ao assinar: " + e.getMessage());
-		//}		
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erro ao assinar: " + e.getMessage());
+		}		
 	}
 	
 	protected void tornarUrgente() {
-		//try {
-			//this.controller.tornarUrgente(this.atual);
-			this.documentCommand = this.documentCommand.addChild(new TornarUrgenteDocumentoCommand(controller, this.atual));
+		try {
+			if (this.atual == null) {
+				JOptionPane.showMessageDialog(this, "Nenhum documento selecionado!");
+				return;
+			}
+			TornarUrgenteDocumentoCommand cmd = new TornarUrgenteDocumentoCommand(controller, this.atual);
+			if (this.documentCommand == null) {
+				this.documentCommand = cmd;
+			} else {
+				this.documentCommand = this.documentCommand.addChild(cmd);
+			}
+			cmd.execute();
+			// Atualiza o documento atual para o novo documento urgente
+			this.atual = controller.getDocumentoAtual();
 			this.refreshUI();
-		//} catch (FWDocumentException e) {
-		//	JOptionPane.showMessageDialog(this, "Erro ao tornar urgente: " + e.getMessage());
-		//}		
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erro ao tornar urgente: " + e.getMessage());
+		}		
 	}	
 
-	
+	// classe abstraata command que já temn isso pronto, eu acho. professor mesm,o sugeriu isso
 	private void criarDocumento(Privacidade privacidade) {
-		AutenticadorStrategy strategy = this.barraSuperior.getSelected();
-		this.documentCommand = this.documentCommand.addChild(new CriarDocumentoCommand(this.atual, controller, strategy, privacidade));
-		this.barraDocs.addDoc("[" + atual.getNumero() + "]");
-		this.refreshUI();
+		try {
+			AutenticadorStrategy strategy = this.barraSuperior.getSelected();
+			CriarDocumentoCommand cmd = new CriarDocumentoCommand(this.atual, controller, strategy, privacidade);
+			if (this.documentCommand == null) {
+				this.documentCommand = cmd;
+			} else {
+				this.documentCommand = this.documentCommand.addChild(cmd);
+			}
+			cmd.execute();
+			if (!controller.getRepositorio().isEmpty()) {
+				this.atual = controller.getRepositorio().get(controller.getRepositorio().size() - 1);
+				this.barraDocs.addDoc("[" + atual.getNumero() + "]");
+				this.refreshUI();
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erro ao criar documento: " + e.getMessage());
+		}
         //try {
         //    AutenticadorStrategy strategy = this.barraSuperior.getSelected();
          //   this.atual = this.controller.criarDocumento(strategy, privacidade);
@@ -99,13 +156,19 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
     }
 	
 	private void desfazer() {
-		this.documentCommand.revert();
-		this.documentCommand = this.documentCommand.getParent();
+		if (this.documentCommand != null) {
+			this.documentCommand.revert();
+			this.documentCommand = this.documentCommand.getParent();
+			this.refreshUI();
+		}
 	}
 	
 	private void refazer() {
-		this.documentCommand.execute();
-		this.documentCommand = this.documentCommand.getChild();
+		if (this.documentCommand != null && this.documentCommand.getChild() != null) {
+			this.documentCommand = this.documentCommand.getChild();
+			this.documentCommand.execute();
+			this.refreshUI();
+		}
 	}
 	
 }

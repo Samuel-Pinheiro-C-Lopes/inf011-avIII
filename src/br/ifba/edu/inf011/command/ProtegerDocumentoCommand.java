@@ -16,6 +16,7 @@ public class ProtegerDocumentoCommand extends IndirecaoBaseDocumentoCommand {
 	@Override
 	public void execute() {
 		try {
+			this.documentoAnterior = this.documento;
 			this.gestorDocumento.protegerDocumento(this.documento);
 		} catch (FWDocumentException e) {
 			e.printStackTrace();
