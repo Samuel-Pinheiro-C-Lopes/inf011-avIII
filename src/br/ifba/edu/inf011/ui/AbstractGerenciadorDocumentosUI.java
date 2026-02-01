@@ -8,6 +8,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -63,12 +64,16 @@ public abstract class AbstractGerenciadorDocumentosUI extends JFrame implements 
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 
+		// Cria um painel para a barra superior e o subtitle
+		JPanel topPanel = new JPanel(new BorderLayout());
+		topPanel.add(this.barraSuperior, BorderLayout.CENTER);
+		topPanel.add(subtitle, BorderLayout.SOUTH);
+
 		// Layout
-		this.add(this.barraSuperior, BorderLayout.NORTH);
+		this.add(topPanel, BorderLayout.NORTH);
 		this.add(this.areaEdicao, BorderLayout.CENTER);
 		this.add(this.barraDocs, BorderLayout.WEST);
 		this.add(this.montarMenuOperacoes(), BorderLayout.EAST);
-		this.add(subtitle, BorderLayout.NORTH);
 	}
 
 	protected void refreshUI() {
