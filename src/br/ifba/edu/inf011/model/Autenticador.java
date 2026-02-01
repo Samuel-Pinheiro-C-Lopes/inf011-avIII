@@ -4,6 +4,7 @@ import br.ifba.edu.inf011.model.documentos.Documento;
 import br.ifba.edu.inf011.strategy.AutenticadorStrategy;
 import br.ifba.edu.inf011.strategy.PadraoAutenticadorStrategy;
 
+// PARTICIPANT: Context (Strategy)
 public class Autenticador {
 	private AutenticadorStrategy strategy;
 
