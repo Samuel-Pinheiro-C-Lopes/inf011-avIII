@@ -1,5 +1,8 @@
 package br.ifba.edu.inf011.ui;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import javax.swing.JOptionPane;
 
 import br.ifba.edu.inf011.af.DocumentOperatorFactory;
@@ -29,8 +32,54 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
 		comandos.addOperacao("⏰ Urgente", e->this.tornarUrgente());
 		comandos.addOperacao("↩️ Desfazer", e->this.desfazer());
 		comandos.addOperacao("↪️ Refazer", e->this.refazer());
+		comandos.addOperacao("💾✍️ Alterar e Assinar", e->this.alterarEAssinar());
+		comandos.addOperacao("💾⏰ Priorizar", e->this.priorizar());
+		comandos.addOperacao("✅ Consolidar", e->this.consolidar());
 		return comandos;
 	 }
+	
+	protected void consolidar() {
+		this.commandManager.clear();
+		JOptionPane.showMessageDialog(this, "Mudanças consolidadas!");
+	}
+
+	protected void alterarEAssinar() {
+		try {
+			this.commandManager.execute(
+				new SalvarDocumentoCommand(
+						controller, 
+						this.areaEdicao.getConteudo(), 
+						this.atual
+				).addSubCommand(
+					new AssinarDocumentoCommand(controller, this.atual)
+				)
+			);
+			
+			this.atual = controller.getDocumentoAtual();
+			this.refreshUI();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erro ao Salvar: " + e.getMessage());
+		}
+	}
+	
+	protected void priorizar() {
+		try {
+			this.commandManager.execute(
+				new SalvarDocumentoCommand(
+						controller, 
+						this.areaEdicao.getConteudo(), 
+						this.atual
+				).addSubCommand(
+					new TornarUrgenteDocumentoCommand(controller, this.atual)
+				)
+			);
+			
+			this.atual = controller.getDocumentoAtual();
+			this.refreshUI();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erro ao Salvar: " + e.getMessage());
+		}
+	}
 	
 	protected void criarDocumentoPublico() {
 		this.criarDocumento(Privacidade.PUBLICO);
@@ -132,7 +181,7 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
 	
 	private void refazer() {
 		try {
-			this.commandManager.revert();
+			this.commandManager.redo();
 			
 			this.atual = controller.getDocumentoAtual();
 			this.refreshUI();

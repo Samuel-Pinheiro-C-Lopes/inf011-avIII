@@ -1,10 +1,15 @@
 package br.ifba.edu.inf011.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -48,6 +53,13 @@ public abstract class AbstractGerenciadorDocumentosUI extends JFrame implements 
 		// Configuração da Janela
 		this.setTitle("Sistema de Gestão de Documentos - INF011");
 		this.setSize(800, 500);
+
+		JLabel subtitle = new JLabel("Logs located in: " + "logs.txt");
+		subtitle.setHorizontalAlignment(SwingConstants.CENTER); 
+		subtitle.setFont(new Font("Dialog", Font.ITALIC, 12)); 
+		subtitle.setForeground(Color.GRAY); 
+		subtitle.setBorder(new EmptyBorder(5, 10, 5, 10)); 
+
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 
@@ -56,7 +68,7 @@ public abstract class AbstractGerenciadorDocumentosUI extends JFrame implements 
 		this.add(this.areaEdicao, BorderLayout.CENTER);
 		this.add(this.barraDocs, BorderLayout.WEST);
 		this.add(this.montarMenuOperacoes(), BorderLayout.EAST);
-
+		this.add(subtitle, BorderLayout.NORTH);
 	}
 
 	protected void refreshUI() {

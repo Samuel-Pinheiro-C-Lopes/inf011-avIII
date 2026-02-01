@@ -15,6 +15,7 @@ public abstract class BaseDocumentoCommand implements DocumentoCommand {
 	protected final GerenciadorDocumentoModel gestorDocumento;
 	private DocumentoCommand child = null;
 	private DocumentoCommand parent = null;
+	private DocumentoCommand subCommand = null;
 	
 	protected BaseDocumentoCommand(final GerenciadorDocumentoModel gestorDocumento) {
 		this.gestorDocumento = gestorDocumento;
@@ -25,11 +26,17 @@ public abstract class BaseDocumentoCommand implements DocumentoCommand {
 	public final void execute() throws Exception {
 		this.executeHook();
 		this.registerLog(getLogHook(), Boolean.TRUE);
+		
+		if (this.subCommand != null)
+			this.subCommand.execute();
 	}	
 	
 	// Template Method revert
 	@Override
 	public final void undo() throws Exception {
+		if (this.subCommand != null)
+			this.subCommand.undo();
+		
 		this.revertHook();
 		this.registerLog(getLogHook(), Boolean.FALSE);
 	}
@@ -44,6 +51,16 @@ public abstract class BaseDocumentoCommand implements DocumentoCommand {
 		this.child = command;
 		this.child.setParent(this);
 		return this.child;
+	}
+	
+	@Override
+	public DocumentoCommand addSubCommand(DocumentoCommand subcommand) {
+		this.subCommand = subcommand;
+		return this;
+	}
+	
+	protected DocumentoCommand getSubCommand() {
+		return this.subCommand;
 	}
 	
 	@Override
