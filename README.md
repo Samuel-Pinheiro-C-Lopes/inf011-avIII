@@ -34,8 +34,8 @@
 
 **Participantes**:
 - **Component**: DocumentoCommand (interface)
-- **Composite**: BaseDocumentoCommand (classe abstrata)
-- **Leaf**: CriarDocumentoCommand, SalvarDocumentoCommand, AssinarDocumentoCommand, ProtegerDocumentoCommand, TornarUrgenteDocumentoCommand
+- **Composite**: BaseDocumentoCommand (classe abstrata), CriarDocumentoCommand, SalvarDocumentoCommand, AssinarDocumentoCommand, ProtegerDocumentoCommand e TornarUrgenteDocumentoCommand (Implementações)
+- **Leaf**: Não há por hora, porém o padrão permite a sua inserção sem acarretar mudanças no lado do cliente
 
 ### Padrão Template Method
 
