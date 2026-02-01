@@ -36,9 +36,4 @@ public class Peticao extends AbstractDocumentoBase implements Documento, Prototi
 	public Prototipavel clonar() throws FWDocumentException{
 		return new Peticao(this);
 	}
-
-
-
-	
-
 }

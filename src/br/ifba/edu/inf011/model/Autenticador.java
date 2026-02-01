@@ -13,6 +13,7 @@ public class Autenticador {
 	
 	public void autenticar(AutenticadorStrategy strategy, Documento documento) {
 		this.strategy = strategy;
+		
 		this.autenticar(documento);
 	}
 	

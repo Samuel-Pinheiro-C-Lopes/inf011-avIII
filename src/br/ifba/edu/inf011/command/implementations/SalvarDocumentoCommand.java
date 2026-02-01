@@ -30,16 +30,15 @@ public class SalvarDocumentoCommand extends BaseDocumentoCommand {
 
 	@Override
 	public void revertHook() throws Exception {
-		if (this.documentoAlterado == null) return;
+		if (this.documentoAlterado == null) 
+			return;
 		
 		this.gestorDocumento.salvarDocumento(documentoAlterado, this.conteudoAntigo);
-
 	}
 
 	@Override
-	protected String getLogHook(Boolean isExecute) {
-		// TODO Auto-generated method stub
-		return null;
+	protected String getLogHook() {
+		return "Salvando conteúdo <" + this.conteudo + "> de <" + this.documento.getNumero() + ">";
 	}
 
 }

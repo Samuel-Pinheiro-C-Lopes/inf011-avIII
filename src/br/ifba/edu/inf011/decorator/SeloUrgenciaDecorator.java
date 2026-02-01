@@ -10,6 +10,13 @@ public class SeloUrgenciaDecorator extends DocumentoDecorator {
     }
     
 	@Override
+	public void setConteudo(String conteudo){
+	    String regexUrgente = "\\[URGENTE\\]\\n";
+	    String conteudoLimpo = conteudo.replaceAll(regexUrgente, "");
+	    super.setConteudo(conteudoLimpo.trim());
+	}	
+    
+	@Override
 	public String getConteudo() throws FWDocumentException{
 		return "[URGENTE]\n" + super.getConteudo();
 	}    

@@ -93,9 +93,9 @@ public class GerenciadorDocumentoModel {
     
     public void atualizarRepositorio(Documento antigo, Documento novo) {
         int index = repositorio.indexOf(antigo);
-        if (index != -1) {
+        
+        if (index != -1) 
             repositorio.set(index, novo);
-        }
     } 
     
 	public Documento getDocumentoAtual() {
@@ -104,7 +104,5 @@ public class GerenciadorDocumentoModel {
 	
 	public void setDocumentoAtual(Documento doc) {
 		this.atual = doc;
-	}        
-    
-    
+	}
 }

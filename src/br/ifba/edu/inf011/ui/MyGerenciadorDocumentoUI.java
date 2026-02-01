@@ -121,19 +121,23 @@ public class MyGerenciadorDocumentoUI extends AbstractGerenciadorDocumentosUI{
 	
 	private void desfazer() {
 		try {
-			this.commandManager.revert();
+			this.commandManager.undo();
+			
+			this.atual = controller.getDocumentoAtual();
 			this.refreshUI();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Erro ao criar documento: " + e.getMessage());
+			JOptionPane.showMessageDialog(this, "Erro ao desfazer: " + e.getMessage());
 		}
 	}
 	
 	private void refazer() {
 		try {
-			this.commandManager.undo();
+			this.commandManager.revert();
+			
+			this.atual = controller.getDocumentoAtual();
 			this.refreshUI();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Erro ao criar documento: " + e.getMessage());
+			JOptionPane.showMessageDialog(this, "Erro ao refazer: " + e.getMessage());
 		}
 	}
 	
